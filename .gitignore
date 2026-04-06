@@ -1,0 +1,54 @@
+# ── Python ──────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual Environment ──────────
+venv/
+env/
+.venv/
+ENV/
+
+# ── Flask / App ──────────────────
+.env
+*.db
+*.sqlite3
+heart_disease.db
+
+# ── ML Models (large files) ──────
+models/*.pkl
+models/*.h5
+models/*.joblib
+
+# ── Data ─────────────────────────
+data/*.csv
+
+# ── Jupyter ──────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── IDE ──────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ── OS ───────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+
+# ── Static generated files ───────
+static/images/*.png
+
+# ── Distribution / Packaging ─────
+*.zip
+*.tar.gz

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}About — HeartGuard AI{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1><i class="bi bi-info-circle me-3"></i>About This Project</h1>
+    <p>Heart Disease Risk Prediction Using Clinical and Lifestyle Data</p>
+  </div>
+</div>
+<div class="container pb-5">
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header-custom">
+          <h5 class="mb-0">📄 Project Synopsis</h5>
+        </div>
+        <div class="card-body p-4">
+          <p>Heart disease remains a leading cause of global mortality, accounting for approximately
+            <strong>17.9 million deaths annually</strong> according to the World Health Organization.
+            Early detection is crucial for reducing death rates and enabling timely medical interventions.
+          </p>
+          <p>This project develops an efficient heart disease prediction system using various machine learning
+            algorithms on publicly available datasets — primarily the Cleveland Heart Disease dataset from the
+            UCI Machine Learning Repository (303 patient records, 14 medical attributes).</p>
+          <p>Multiple supervised ML algorithms are implemented and evaluated including Logistic Regression,
+            KNN, SVM, Decision Tree, Random Forest, XGBoost, and ANN.</p>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header-custom">
+          <h5 class="mb-0">🛠️ Technology Stack</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="row g-3">
+            {% for cat, items in [
+            ('Backend', 'Python 3.11, Flask 3.0'),
+            ('ML Libraries', 'Scikit-learn, XGBoost, TensorFlow/Keras'),
+            ('Data Processing', 'Pandas, NumPy, imbalanced-learn'),
+            ('Visualization', 'Matplotlib, Seaborn'),
+            ('Frontend', 'HTML5, CSS3, Bootstrap 5, JavaScript'),
+            ('Database', 'SQLite 3'),
+            ('Model Storage', 'Pickle, Joblib'),
+            ('Version Control', 'Git, GitHub')
+            ] %}
+            <div class="col-md-6">
+              <div style="background:#f8f9fa; border-radius:10px; padding:12px 16px;">
+                <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:#e63946;">{{ cat }}
+                </div>
+                <div style="font-size:0.9rem; font-weight:500;">{{ items }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header-custom">
+          <h5 class="mb-0">📊 Datasets</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="mb-3 p-3" style="border:1.5px solid #dee2e6; border-radius:12px;">
+            <strong>Cleveland Heart Disease Dataset</strong><br>
+            <small class="text-muted">UCI Machine Learning Repository — 303 records, 14 attributes</small><br>
+            <a href="https://archive.ics.uci.edu/dataset/45/heart+disease" target="_blank"
+              class="btn btn-sm btn-outline-primary mt-2" style="border-radius:8px;">Visit →</a>
+          </div>
+          <div class="p-3" style="border:1.5px solid #dee2e6; border-radius:12px;">
+            <strong>Heart Failure Prediction Dataset</strong><br>
+            <small class="text-muted">Kaggle — fedesoriano — 918 records, 12 features</small><br>
+            <a href="https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction" target="_blank"
+              class="btn btn-sm btn-outline-primary mt-2" style="border-radius:8px;">Visit →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <!-- <div class="card mb-4">
+        <div class="card-header-custom">
+          <h5 class="mb-0">👩‍🎓 Project Info</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="detail-row d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted small">Student</span>
+            <span class="fw-bold small">Patil Rutuja Dinesh</span>
+          </div>
+          <div class="detail-row d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted small">Roll No.</span>
+            <span class="fw-bold small">B246</span>
+          </div>
+          <div class="detail-row d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted small">Guide</span>
+            <span class="fw-bold small">Prof. Pramod Jadhao</span>
+          </div>
+          <div class="detail-row d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted small">Department</span>
+            <span class="fw-bold small">MCA (2nd Year)</span>
+          </div>
+          <div class="detail-row d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted small">Institute</span>
+            <span class="fw-bold small">Trinity Academy, Pune</span>
+          </div>
+          <div class="detail-row d-flex justify-content-between py-2">
+            <span class="text-muted small">University</span>
+            <span class="fw-bold small">SPPU 2025–26</span>
+          </div>
+        </div>
+      </div> -->
+      <div class="card">
+        <div class="card-header-custom">
+          <h5 class="mb-0">🔗 API Endpoints</h5>
+        </div>
+        <div class="card-body p-4">
+          <code
+            style="font-size:0.8rem; display:block; margin-bottom:8px; background:#f8f9fa; padding:8px; border-radius:8px;">POST /api/predict</code>
+          <code
+            style="font-size:0.8rem; display:block; margin-bottom:8px; background:#f8f9fa; padding:8px; border-radius:8px;">GET /api/models</code>
+          <code
+            style="font-size:0.8rem; display:block; background:#f8f9fa; padding:8px; border-radius:8px;">GET /api/stats</code>
+          <p class="text-muted small mt-3">REST API available for integration with other systems.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

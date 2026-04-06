@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block title %}Prediction Result — HeartGuard AI{% endblock %}
+
+{% block extra_css %}
+<style>
+  .result-hero {
+    border-radius: 20px;
+    padding: 44px 36px;
+    text-align: center;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .result-positive { background: linear-gradient(135deg, #c1121f, #e63946); color: #fff; }
+  .result-negative { background: linear-gradient(135deg, #1b7a6e, #2a9d8f); color: #fff; }
+  .result-icon { font-size: 5rem; line-height: 1; margin-bottom: 12px; }
+  .result-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+  .result-subtitle { font-size: 1rem; opacity: 0.88; }
+  .prob-gauge {
+    background: rgba(255,255,255,0.2);
+    border-radius: 30px;
+    height: 12px;
+    overflow: hidden;
+    margin: 16px auto;
+    max-width: 380px;
+  }
+  .prob-fill {
+    height: 100%;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.85);
+    transition: width 1.2s ease;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-label { color: #666; font-weight: 500; }
+  .detail-value { font-weight: 600; color: #212529; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeInUp 0.5s ease forwards; }
+  .fade-in-delay { animation: fadeInUp 0.5s ease 0.2s forwards; opacity: 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <!-- Result Hero Card -->
+      <div class="result-hero {% if prediction == 1 %}result-positive{% else %}result-negative{% endif %} fade-in">
+        <div class="result-icon">{% if prediction == 1 %}💔{% else %}💚{% endif %}</div>
+        <div class="result-title">
+          {% if prediction == 1 %}Heart Disease Detected{% else %}No Heart Disease Detected{% endif %}
+        </div>
+        <div class="result-subtitle">
+          {% if prediction == 1 %}
+            Clinical indicators suggest elevated cardiovascular risk. Immediate medical consultation advised.
+          {% else %}
+            No significant indicators of heart disease found based on the provided data.
+          {% endif %}
+        </div>
+
+        <!-- Probability bar -->
+        <div class="prob-gauge">
+          <div class="prob-fill" id="probFill" style="width: 0%"></div>
+        </div>
+        <p style="font-size:1.6rem; font-weight:800; margin:4px 0;">{{ probability }}%</p>
+        <p style="font-size:0.85rem; opacity:0.8;">Probability of Heart Disease</p>
+
+        <!-- Risk badge -->
+        <span class="badge mt-2 px-4 py-2"
+              style="border-radius:30px; font-size:0.95rem; background:rgba(255,255,255,0.2); border:1.5px solid rgba(255,255,255,0.4);">
+          Risk Level: <strong>{{ risk_level }}</strong>
+        </span>
+      </div>
+
+      <div class="row g-4 fade-in-delay">
+
+        <!-- Diagnosis Details -->
+        <div class="col-md-5">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <h6 class="mb-0"><i class="bi bi-clipboard2-pulse me-2"></i>Diagnosis Summary</h6>
+            </div>
+            <div class="card-body p-4">
+              <div class="detail-row">
+                <span class="detail-label">Model Used</span>
+                <span class="detail-value">{{ model_used }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Prediction</span>
+                <span class="detail-value">
+                  {% if prediction == 1 %}
+                    <span class="badge bg-danger">Positive</span>
+                  {% else %}
+                    <span class="badge bg-success">Negative</span>
+                  {% endif %}
+                </span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Probability</span>
+                <span class="detail-value">{{ probability }}%</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Risk Level</span>
+                <span class="risk-badge risk-{{ risk_level | lower }}">{{ risk_level }}</span>
+              </div>
+
+              <!-- Recommendation -->
+              <div class="mt-4 p-3 rounded-3"
+                   style="background:{% if prediction==1 %}#ffe8e8{% else %}#e8f5e9{% endif %};">
+                <p class="fw-bold mb-1" style="font-size:0.88rem;">
+                  {% if prediction==1 %}⚠️ Recommendation{% else %}✅ Recommendation{% endif %}
+                </p>
+                <p class="mb-0" style="font-size:0.83rem; color:#444;">
+                  {% if risk_level == 'High' %}
+                    Immediate consultation with a cardiologist is strongly advised. Further diagnostic tests (ECG, Echo, Angiography) recommended.
+                  {% elif risk_level == 'Medium' %}
+                    Schedule a follow-up with your physician. Monitor blood pressure and cholesterol. Consider lifestyle changes.
+                  {% else %}
+                    Maintain healthy lifestyle habits. Regular check-ups every 1–2 years recommended for prevention.
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Parameters -->
+        <div class="col-md-7">
+          <div class="card h-100">
+            <div class="card-header-custom">
+              <h6 class="mb-0"><i class="bi bi-person-vcard me-2"></i>Patient Input Parameters</h6>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-2">
+                {% set labels = {
+                  'age':'Age','sex':'Sex','cp':'Chest Pain Type',
+                  'trestbps':'Blood Pressure','chol':'Cholesterol',
+                  'fbs':'Fasting Blood Sugar','restecg':'Resting ECG',
+                  'thalach':'Max Heart Rate','exang':'Exercise Angina',
+                  'oldpeak':'ST Depression','slope':'ST Slope',
+                  'ca':'Major Vessels','thal':'Thalassemia'
+                } %}
+                {% set units = {
+                  'age':'yrs','trestbps':'mmHg','chol':'mg/dl',
+                  'thalach':'bpm','oldpeak':''
+                } %}
+                {% for key, val in input_data.items() %}
+                  <div class="col-6 col-md-4">
+                    <div style="background:#f8f9fa; border-radius:10px; padding:10px 12px;">
+                      <div style="font-size:0.72rem; color:#888; font-weight:600; text-transform:uppercase;">
+                        {{ labels.get(key, key) }}
+                      </div>
+                      <div style="font-size:1.05rem; font-weight:700; color:#212529;">
+                        {{ val }}{% if key in units %} {{ units[key] }}{% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="col-12 d-flex gap-3 flex-wrap">
+          <a href="/predict" class="btn btn-primary-custom">
+            <i class="bi bi-plus-circle me-2"></i>New Prediction
+          </a>
+          <a href="/dashboard" class="btn btn-navy">
+            <i class="bi bi-bar-chart me-2"></i>View Dashboard
+          </a>
+          <a href="/history" class="btn btn-outline-secondary" style="border-radius:10px;">
+            <i class="bi bi-clock-history me-2"></i>Prediction History
+          </a>
+          <button onclick="window.print()" class="btn btn-outline-secondary" style="border-radius:10px;">
+            <i class="bi bi-printer me-2"></i>Print Report
+          </button>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="col-12">
+          <div class="alert alert-warning" style="border-radius:12px; font-size:0.83rem;">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Disclaimer:</strong> This prediction is generated by a machine learning model for educational/research purposes only.
+            It does <strong>not</strong> replace professional medical diagnosis. Always consult a qualified healthcare provider.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Animate probability bar on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('probFill').style.width = '{{ probability }}%';
+    }, 300);
+  });
+</script>
+{% endblock %}

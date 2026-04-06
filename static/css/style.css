@@ -1,0 +1,163 @@
+/* ============================================================
+   HeartGuard AI — Custom Stylesheet
+   Project: Heart Disease Risk Prediction
+   MCA Project | Trinity Academy of Engineering, Pune
+   ============================================================ */
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f0f4f8; }
+::-webkit-scrollbar-thumb { background: #c1121f; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #e63946; }
+
+/* ── Selection color ── */
+::selection { background: #e63946; color: #fff; }
+
+/* ── Smooth scroll ── */
+html { scroll-behavior: smooth; }
+
+/* ── Loading spinner overlay ── */
+#loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(29, 53, 87, 0.75);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+}
+#loading-overlay.active { display: flex; }
+.loading-heart {
+  font-size: 4rem;
+  animation: pulse-heart 1s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+.loading-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+/* ── ECG animated line ── */
+.ecg-animated {
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%, transparent 20%,
+    #e63946 20%, #e63946 22%,
+    transparent 22%, transparent 26%,
+    #e63946 26%, #e63946 27%,
+    #ff6b6b 27%, #ff6b6b 30%,
+    #e63946 30%, #e63946 31%,
+    transparent 31%, transparent 100%
+  );
+  background-size: 200px 100%;
+  animation: ecg-scroll 1.5s linear infinite;
+  border-radius: 2px;
+  margin: 10px 0;
+}
+@keyframes ecg-scroll {
+  0%   { background-position: 0 0; }
+  100% { background-position: 200px 0; }
+}
+
+/* ── Tooltip override ── */
+.tooltip-inner {
+  background: #1d3557;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+.tooltip-arrow::before { border-top-color: #1d3557 !important; }
+
+/* ── Print styles ── */
+@media print {
+  .navbar, footer, .btn, .alert { display: none !important; }
+  .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+  body { background: #fff !important; }
+}
+
+/* ── Animate on scroll utility ── */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Number counter animation ── */
+.counter-value {
+  transition: all 0.3s;
+}
+
+/* ── Custom form range ── */
+input[type="range"] {
+  accent-color: #e63946;
+}
+
+/* ── Card hover lift ── */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12) !important;
+}
+
+/* ── Risk meter ── */
+.risk-meter {
+  height: 10px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #2a9d8f 0%, #f4a261 50%, #e63946 100%);
+  position: relative;
+  overflow: visible;
+}
+.risk-needle {
+  position: absolute;
+  top: -4px;
+  width: 18px;
+  height: 18px;
+  background: #1d3557;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  transition: left 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Badge glow effect ── */
+.badge-glow-danger {
+  box-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
+}
+.badge-glow-success {
+  box-shadow: 0 0 10px rgba(42, 157, 143, 0.5);
+}
+
+/* ── Table zebra stripe enhancement ── */
+.table-striped-custom tbody tr:nth-child(even) {
+  background: rgba(29, 53, 87, 0.03);
+}
+
+/* ── Code block ── */
+code {
+  background: #f0f4f8;
+  color: #e63946;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 0.87em;
+}
+
+/* ── Mobile nav fix ── */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: rgba(29, 53, 87, 0.97);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 8px;
+  }
+}
